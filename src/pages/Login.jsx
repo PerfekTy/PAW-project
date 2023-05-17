@@ -1,14 +1,16 @@
 import { useState } from "react";
 
+import SubmitButton from "../components/SubmitButton";
+
 const Login = () => {
   const [userInput, setUserInput] = useState({
-    login: "",
+    email: "",
     password: "",
   });
   const [isCheckboxClicked, setIsCheckboxClicked] = useState(false);
 
   const loginOnChange = e => {
-    setUserInput({ ...userInput, login: e.target.value });
+    setUserInput({ ...userInput, email: e.target.value });
   };
 
   const passwordOnChange = e => {
@@ -26,7 +28,7 @@ const Login = () => {
       ifRemember: isCheckboxClicked,
     };
     setUserInput({
-      login: "",
+      email: "",
       password: "",
     });
     setIsCheckboxClicked(false);
@@ -35,14 +37,15 @@ const Login = () => {
 
   return (
     <div className="grid place-items-center">
-      <form onSubmit={submitHandler} method="POST">
+      <form onSubmit={submitHandler} method="POST" className="mt-10">
         <div className="form-fieldset">
           <input
-            type="text"
+            type="email"
             name="login"
-            placeholder="Login"
+            placeholder="E-mail"
             value={userInput.login}
             onChange={loginOnChange}
+            required
           />
         </div>
         <div>
@@ -52,6 +55,7 @@ const Login = () => {
             placeholder="Password"
             value={userInput.password}
             onChange={passwordOnChange}
+            required
           />
         </div>
         <div>
@@ -63,13 +67,7 @@ const Login = () => {
           />
           <label htmlFor="rememberme">Remember me</label>
         </div>
-        <div>
-          <input
-            type="submit"
-            value="Sign In"
-            className="w-full bg-[#888722] hover:bg-[#e2df4d] cursor-pointer"
-          />
-        </div>
+        <SubmitButton value="Sign In" />
       </form>
     </div>
   );
