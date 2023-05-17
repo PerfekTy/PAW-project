@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  /* body {
+    @apply bg-black text-white;
+  } */
+
+  li {
+    @apply p-4 bg-[#fff];
+  }
+
+  input {
+    @apply border p-2 m-3 rounded-lg border-[#cfcc29] outline-none w-full;
+  }
+
+  input[type="checkbox"] {
+    @apply w-5 cursor-pointer;
+  }
+}
