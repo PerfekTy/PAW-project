@@ -1,5 +1,3 @@
-import React from "react";
-
 const NavbarIcon = props => {
   return (
     <div className="sidebar-icon group">

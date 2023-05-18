@@ -62,7 +62,7 @@ const Register = () => {
   };
 
   return (
-    <div className="grid place-items-center w-1/2 mx-auto">
+    <div className="grid place-items-center w-1/2 mx-auto max-[800px]:w-[90%] max-[800px]:ml-12 max-[600px]:ml-2">
       <form onSubmit={submitHandler} method="POST" className="mt-10">
         <div className="flex">
           <div className="mr-3">
