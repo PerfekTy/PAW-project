@@ -2,10 +2,18 @@ import { Link } from "react-router-dom";
 import { AiFillHome } from "react-icons/ai";
 import { BsDoorOpenFill, BsFillPersonPlusFill, BsCart4 } from "react-icons/bs";
 import { RiUserShared2Fill } from "react-icons/ri";
+import { MdManageAccounts } from "react-icons/md";
+import { useState } from "react";
 
 import NavbarIcon from "./NavbarIcon";
+import ModalElement from "../Modal/ModalElement";
 
 const NavIcons = () => {
+  const [openModal, setOpenModal] = useState(false);
+  const modalHandler = () => {
+    setOpenModal(!openModal);
+  };
+
   return (
     <>
       <li>
@@ -30,7 +38,20 @@ const NavIcons = () => {
         </Link>
       </li>
       <li>
-        <NavbarIcon icon={<BsCart4 size={27} />} info="Cart 🛒" />
+        <Link to="/account">
+          <NavbarIcon
+            icon={<MdManageAccounts size={27} />}
+            info="My account 🪪"
+          />
+        </Link>
+      </li>
+      <li onClick={modalHandler}>
+        <ModalElement />
+      </li>
+      <li>
+        <Link to="/cart">
+          <NavbarIcon icon={<BsCart4 size={27} />} info="Cart 🛒" />
+        </Link>
       </li>
       <li className="mt-auto ">
         <NavbarIcon icon={<BsDoorOpenFill size={27} />} info="Logout 🚪" />

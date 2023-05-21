@@ -1,6 +1,5 @@
 import CardInfo from "./CardInfo";
 import LikeButton from "./LikeButton";
-import exampleUserPhoto from "../../assets/example.jpeg";
 import exampleUserAvatar from "../../assets/userPhoto.jpeg";
 
 const Card = () => {
@@ -17,7 +16,7 @@ const Card = () => {
           <p>@user</p>
         </div>
         <div>
-          <img src={exampleUserPhoto} alt="item" width={235} />
+          <img alt="item" width={235} />
         </div>
         <CardInfo />
         <LikeButton />
