@@ -1,15 +1,21 @@
 import { useState } from "react";
-import { styles } from "../../helpers/styles";
 
-const SellForm = () => {
+import { styles } from "../../helpers/styles";
+import { regex } from "../../helpers/regex";
+
+const SellForm = props => {
+  const [image, setImage] = useState("");
+
+  const [nameErr, setNameErr] = useState("");
+  const [priceErr, setPriceErr] = useState("");
+  const [brandErr, setBrandErr] = useState("");
+
   const [saleInput, setSaleInput] = useState({
     itemName: "",
     itemPrice: "",
     itemSize: "",
     itemBrand: "",
   });
-
-  const [image, setImage] = useState("");
 
   const onImageChange = e => {
     if (e.target.files && e.target.files[0]) {
@@ -35,22 +41,50 @@ const SellForm = () => {
 
   const onSubmitHandler = e => {
     e.preventDefault();
-    const data = saleInput;
+
+    setSaleInput({
+      itemName: "",
+      itemPrice: "",
+      itemSize: "",
+      itemBrand: "",
+    });
+
+    if (!regex.inputName.test(saleInput.itemName))
+      setNameErr("You can use only letters min 3, max 20");
+
+    if (!regex.inputPrice.test(saleInput.itemPrice))
+      setPriceErr("You can use only number min 1, max 5");
+
+    if (!regex.inputBrand.test(saleInput.itemBrand))
+      setBrandErr("You can use only letters min 3, max 20");
+
+    props.onSaveData(saleInput);
   };
 
   return (
-    <form className="m-3" onSubmit={onSubmitHandler}>
-      <fieldset className="text-center">
-        <label>Add photo of your cloth you want to sale:</label>
-        <input
-          type="file"
-          className="border border-[#ccc] cursor-pointer w-[80%]"
-          accept="image/*"
-          onChange={onImageChange}
-          required
-        />
+    <form className="mx-auto w-full" onSubmit={onSubmitHandler}>
+      <fieldset>
+        <label className="text-left ml-10">
+          Add photo of your cloth you want to sale:
+        </label>
+        <div className="flex">
+          <input
+            type="file"
+            className="border-none w-1/2 h-1/3 mt-10 cursor-pointer ml-20"
+            accept="image/*"
+            onChange={onImageChange}
+            required
+          />
+          <img
+            src={image}
+            alt=""
+            width={150}
+            className={image ? "border mb-2 p-1" : ""}
+          />
+        </div>
       </fieldset>
       <hr />
+      <div className="text-[red] text-center mt-1">{nameErr}</div>
       <fieldset className={styles.CENTER}>
         <label>1. </label>
         <input
@@ -68,10 +102,10 @@ const SellForm = () => {
         </label>
         <select
           className="w-1/3"
-          value={saleInput.itemSize}
           onChange={onSizeChange}
+          defaultValue="Choose size"
           required>
-          <option value="" disabled selected>
+          <option value="Choose size" key="1" disabled>
             Choose size
           </option>
           <option value="XXS" key="2">
@@ -97,6 +131,7 @@ const SellForm = () => {
           </option>
         </select>
       </fieldset>
+      <div className="text-[red] text-center mt-1">{brandErr}</div>
       <fieldset className={styles.CENTER}>
         <label>3. </label>
         <input
@@ -107,6 +142,7 @@ const SellForm = () => {
           placeholder="What brand is your cloth? If none leave it blank..."
         />
       </fieldset>
+      <div className="text-[red] text-center">{priceErr}</div>
       <fieldset className={styles.CENTER}>
         <label className="-mt-3">4. </label>
         <input

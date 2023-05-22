@@ -9,12 +9,19 @@ import { styles } from "../../helpers/styles";
 
 Modal.setAppElement("#root");
 
-const ModalElement = props => {
+const ModalElement = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   function toggleModal() {
     setIsOpen(!isOpen);
   }
+
+  const saveDataHandler = inputedData => {
+    const data = {
+      ...inputedData,
+    };
+    console.log(data);
+  };
 
   return (
     <>
@@ -27,7 +34,7 @@ const ModalElement = props => {
         closeTimeoutMS={300}
         className={styles.MODAL_STYLE}
         overlayClassName={styles.OVERLAY_MODAL_STYLE}>
-        <SellForm />
+        <SellForm onSaveData={saveDataHandler} />
         <IoCloseOutline
           onClick={toggleModal}
           size={30}
