@@ -1,0 +1,41 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,500;1,300&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    body {
+        font-family: "Nunito", sans-serif;
+    }
+
+    .grow {
+        animation: grow 1s ease, fade-in 1s linear;
+    }
+
+    .alert {
+        @apply bg-[crimson] text-center text-white mb-1 mt-1 rounded-lg w-1/4 mx-auto p-2;
+    }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes grow {
+        from {
+            transform: scale(0);
+        }
+        to {
+            transform: scale(1);
+        }
+    }
+}
