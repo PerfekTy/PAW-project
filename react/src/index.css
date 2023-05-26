@@ -14,7 +14,7 @@
     }
 
     .alert {
-        @apply bg-[crimson] text-center text-white mb-1 mt-1 rounded-lg w-1/4 mx-auto p-2;
+        @apply bg-[crimson] text-center text-white mt-4 rounded-lg w-1/4 mx-auto p-2;
     }
 
     .dropdown:hover .dropdown-content {

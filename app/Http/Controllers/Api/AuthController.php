@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\SignupRequest;
 use App\Models\User;
-use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -18,6 +17,7 @@ class AuthController extends Controller
         /** @var \App\Models\User $user */
         $user = User::create([
             'nickname' => $data['nickname'],
+            'fullname' => $data['fullname'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
@@ -46,7 +46,9 @@ class AuthController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
-        $user->currentAccessToken()->delete();
+        if($user) {
+            $user->user()->tokens()->delete();
+        }
         return response('', 204);
     }
 }

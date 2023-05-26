@@ -2,10 +2,11 @@ import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
 
 import logo from "../assets/logo.png";
-import profileimg from "../assets/profileimg.png";
+import profileimg from "../assets/Default_profile_img.png";
+import axiosClient from "../axios-client";
 
 const DefaultLayout = () => {
-    const { user, token } = useStateContext();
+    const { user, token, setUser, setToken } = useStateContext();
 
     if (!token) {
         return <Navigate to="/login" />;
@@ -13,6 +14,16 @@ const DefaultLayout = () => {
 
     const onLogout = (e) => {
         e.preventDefault();
+
+        axiosClient
+            .post("/logout")
+            .then(() => {
+                setUser({});
+                setToken(null);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -20,7 +31,7 @@ const DefaultLayout = () => {
             <aside className="bg-[#cde9e4] flex items-center justify-center">
                 <li className="p-5 list-none text-xl text-[] flex items-center">
                     <Link to="/home">
-                        <img src={logo} width={40} alt="cloth logo" />
+                        <img src={logo} width={45} alt="cloth logo" />
                     </Link>
                 </li>
                 <li className="p-5 list-none text-xl text-[]">

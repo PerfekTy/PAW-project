@@ -1,8 +1,32 @@
+import { createRef } from "react";
+
 import logo from "../assets/logo.png";
+import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 export default function Login() {
+    const { setUser, setToken } = useStateContext();
+
+    const emailRef = createRef();
+    const passwordRef = createRef();
+
     const onSubmit = (e) => {
         e.preventDefault();
+
+        const payload = {
+            email: emailRef.current.value,
+            password: passwordRef.current.value,
+        };
+
+        axiosClient
+            .post("/login", payload)
+            .then(({ data }) => {
+                setUser(data.user);
+                setToken(data.token);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     return (
@@ -40,6 +64,7 @@ export default function Login() {
                                     type="email"
                                     autoComplete="email"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6 pl-2 h-10"
+                                    ref={emailRef}
                                 />
                             </div>
                         </div>
@@ -68,6 +93,7 @@ export default function Login() {
                                     type="password"
                                     autoComplete="current-password"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6 pl-2 h-10"
+                                    ref={passwordRef}
                                 />
                             </div>
                         </div>

@@ -6,8 +6,10 @@ import { useStateContext } from "../contexts/ContextProvider";
 
 const Signup = () => {
     const nickNameRef = createRef();
+    const fullNameRef = createRef();
     const emailRef = createRef();
     const passwordRef = createRef();
+    const passwordCRef = createRef();
     const { setUser, setToken } = useStateContext();
     const [errors, setErrors] = useState(null);
 
@@ -15,8 +17,10 @@ const Signup = () => {
         e.preventDefault();
         const payload = {
             nickname: nickNameRef.current.value,
+            fullname: fullNameRef.current.value,
             email: emailRef.current.value,
             password: passwordRef.current.value,
+            password_confirmation: passwordCRef.current.value,
         };
 
         axiosClient
@@ -77,6 +81,26 @@ const Signup = () => {
                                 />
                             </div>
                         </div>
+
+                        <div>
+                            <label
+                                htmlFor="fullname"
+                                className="block text-sm font-medium leading-6 text-gray-900"
+                            >
+                                Full name
+                            </label>
+                            <div className="mt-2">
+                                <input
+                                    id="fullname"
+                                    name="fullname"
+                                    type="text"
+                                    autoComplete="fullname"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6 pl-2 h-10"
+                                    ref={fullNameRef}
+                                />
+                            </div>
+                        </div>
+
                         <div>
                             <div className="flex items-center justify-between">
                                 <label
@@ -111,10 +135,30 @@ const Signup = () => {
                                 <input
                                     id="password"
                                     name="password"
-                                    type="password"
+                                    type="text"
                                     autoComplete="current-password"
                                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6 pl-2 h-10"
                                     ref={passwordRef}
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <div className="flex items-center justify-between">
+                                <label
+                                    htmlFor="password_confirmation"
+                                    className="block text-sm font-medium leading-6 text-gray-900"
+                                >
+                                    Password confirmation
+                                </label>
+                            </div>
+                            <div className="mt-2">
+                                <input
+                                    id="password"
+                                    name="password_confirmation"
+                                    type="text"
+                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-lg sm:leading-6 pl-2 h-10"
+                                    ref={passwordCRef}
                                 />
                             </div>
                         </div>
