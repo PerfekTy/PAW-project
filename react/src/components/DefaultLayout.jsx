@@ -4,9 +4,15 @@ import { useStateContext } from "../contexts/ContextProvider";
 import logo from "../assets/logo.png";
 import profileimg from "../assets/Default_profile_img.png";
 import axiosClient from "../axios-client";
+import { useState } from "react";
 
 const DefaultLayout = () => {
     const { user, token, setUser, setToken } = useStateContext();
+    const [open, setOpen] = useState(false);
+
+    const dropdownHandler = () => {
+        setOpen(!open);
+    };
 
     if (!token) {
         return <Navigate to="/login" />;
@@ -41,7 +47,7 @@ const DefaultLayout = () => {
                     <input
                         type="text"
                         placeholder="Search for clothes..."
-                        className="p-2 rounded-lg text-lg w-[400px]"
+                        className="p-2 rounded-lg text-lg w-[400px] outline-none"
                     />
                 </form>
                 <li className="p-5 list-none text-xl text-[]">
@@ -49,7 +55,11 @@ const DefaultLayout = () => {
                 </li>
                 <li className="p-5 list-none text-lg">
                     <div className="dropdown relative flex items-center">
-                        <a href="#" className="profile-img">
+                        <a
+                            href="#"
+                            className="profile-img"
+                            onClick={dropdownHandler}
+                        >
                             <img
                                 src={profileimg}
                                 alt="img profile"
@@ -57,15 +67,17 @@ const DefaultLayout = () => {
                             />
                         </a>
                         <p className="ml-3">{user.nickname}</p>
-                        <div className="dropdown-content hidden">
-                            <div className="flex flex-col bg-[#fffe] rounded-lg p-4 absolute border top-10 left-0 w-[170px]">
-                                <a href="#">My wardrobe</a>
-                                <a href="#">Settings</a>
-                                <a href="#" onClick={onLogout}>
-                                    Logout
-                                </a>
+                        {open && (
+                            <div className="dropdown-content">
+                                <div className="flex flex-col bg-[#fffe] rounded-lg p-4 absolute border top-10 left-0 w-[170px]">
+                                    <a href="#">My wardrobe</a>
+                                    <a href="#">Settings</a>
+                                    <a href="#" onClick={onLogout}>
+                                        Logout
+                                    </a>
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
                 </li>
             </aside>

@@ -1,4 +1,4 @@
-import { createRef } from "react";
+import { createRef, useState } from "react";
 
 import logo from "../assets/logo.png";
 import axiosClient from "../axios-client";
@@ -9,6 +9,7 @@ export default function Login() {
 
     const emailRef = createRef();
     const passwordRef = createRef();
+    const [errors, setErrors] = useState(null);
 
     const onSubmit = (e) => {
         e.preventDefault();
@@ -25,7 +26,10 @@ export default function Login() {
                 setToken(data.token);
             })
             .catch((err) => {
-                console.log(err);
+                const response = err.response;
+                if (response && response.status === 422) {
+                    setErrors(response.data.errors);
+                }
             });
     };
 
@@ -43,6 +47,14 @@ export default function Login() {
                         Sign in to your account
                     </h2>
                 </div>
+
+                {errors && (
+                    <div className="alert">
+                        {Object.keys(errors).map((key) => (
+                            <p key={key}>{errors[key][0]}</p>
+                        ))}
+                    </div>
+                )}
 
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form
