@@ -1,14 +1,30 @@
 import { Link, Navigate, Outlet } from "react-router-dom";
 import { useStateContext } from "../contexts/ContextProvider";
+import axiosClient from "../axios-client";
+import { useEffect, useState } from "react";
 
 import logo from "../assets/logo.png";
-import profileimg from "../assets/Default_profile_img.png";
-import axiosClient from "../axios-client";
-import { useState } from "react";
+import other from "../assets/other_img.png";
+import male from "../assets/male_img.svg";
+import female from "../assets/female_img.png";
 
 const DefaultLayout = () => {
     const { user, token, setUser, setToken } = useStateContext();
     const [open, setOpen] = useState(false);
+    const [avatar, _setAvatar] = useState(null);
+
+    useEffect(() => {
+        axiosClient.get("/user").then(({ data }) => {
+            setUser(data);
+            if (data.gender === "male") {
+                _setAvatar(male);
+            } else if (data.gender === "female") {
+                _setAvatar(female);
+            } else if (data.gender === "other") {
+                _setAvatar(other);
+            }
+        });
+    }, []);
 
     const dropdownHandler = () => {
         setOpen(!open);
@@ -60,18 +76,20 @@ const DefaultLayout = () => {
                             className="profile-img"
                             onClick={dropdownHandler}
                         >
-                            <img
-                                src={profileimg}
-                                alt="img profile"
-                                width={40}
-                            />
+                            <img src={avatar} alt="img profile" width={40} />
                         </a>
-                        <p className="ml-3">{user.nickname}</p>
+
+                        {user.nickname ? (
+                            <p className="ml-3">{user.nickname}</p>
+                        ) : (
+                            <p className="ml-3">Loading...</p>
+                        )}
+
                         {open && (
                             <div className="dropdown-content">
                                 <div className="flex flex-col bg-[#fffe] rounded-lg p-4 absolute border top-10 left-0 w-[170px]">
-                                    <a href="#">My wardrobe</a>
-                                    <a href="#">Settings</a>
+                                    <Link to="/wardrobe">My wardrobe</Link>
+                                    <Link to="/account">My account</Link>
                                     <a href="#" onClick={onLogout}>
                                         Logout
                                     </a>

@@ -5,6 +5,7 @@ import NotFound from "./pages/NotFound";
 import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Home from "./pages/Home";
+import Account from "./pages/Account";
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,10 @@ const router = createBrowserRouter([
             {
                 path: "/home",
                 element: <Home />,
+            },
+            {
+                path: "/account",
+                element: <Account />,
             },
         ],
     },

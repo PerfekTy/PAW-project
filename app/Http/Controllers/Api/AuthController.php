@@ -19,6 +19,7 @@ class AuthController extends Controller
             'nickname' => $data['nickname'],
             'fullname' => $data['fullname'],
             'email' => $data['email'],
+            'gender' => $data['gender'],
             'password' => bcrypt($data['password']),
         ]);
 
@@ -47,7 +48,7 @@ class AuthController extends Controller
         /** @var \App\Models\User $user */
         $user = $request->user();
         if($user) {
-            $user->user()->tokens()->delete();
+            $user->currentAccessToken() -> delete();
         }
         return response('', 204);
     }

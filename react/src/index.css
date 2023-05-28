@@ -14,11 +14,15 @@
     }
 
     .alert {
-        @apply bg-[crimson] text-center text-white mt-4 rounded-lg w-1/4 mx-auto p-2;
+        @apply bg-[crimson] text-center text-white mt-4 rounded-lg w-full mx-auto p-2;
     }
 
     .dropdown-content a {
         @apply p-1;
+    }
+
+    .profile {
+        @apply rounded-tr-3xl rounded-tl-3xl bg-[#daecea] border-4 border-b-0 border-l-0 border-t-0 border-[#b2e9d3] p-3 pr-16 pl-16 text-center hover:bg-[#edfefb];
     }
 
     @keyframes fade-in {

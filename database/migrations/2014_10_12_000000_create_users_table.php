@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('nickname')->unique();
             $table->string('fullname');
             $table->string('email')->unique();
+            $table->string('gender');
             $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
         });
     }
 

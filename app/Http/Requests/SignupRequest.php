@@ -28,6 +28,7 @@ class SignupRequest extends FormRequest
             'nickname' => ['required', 'string','unique:users'],
             'fullname' => ['required', 'string'],
             'email' => ['required', 'email', 'unique:users,email'],
+            'gender' => ['required'],
             'password' => ['required','confirmed',
                 Password::min(8)
                     ->letters()
