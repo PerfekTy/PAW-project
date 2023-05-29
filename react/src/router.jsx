@@ -6,6 +6,7 @@ import DefaultLayout from "./components/DefaultLayout";
 import GuestLayout from "./components/GuestLayout";
 import Home from "./pages/Home";
 import Account from "./pages/Account";
+import Wardrobe from "./pages/Wardrobe";
 
 const router = createBrowserRouter([
     {
@@ -23,6 +24,10 @@ const router = createBrowserRouter([
             {
                 path: "/account",
                 element: <Account />,
+            },
+            {
+                path: "/wardrobe",
+                element: <Wardrobe />,
             },
         ],
     },
