@@ -29,7 +29,12 @@ class StoreUserRequest extends FormRequest
             'fullname' => 'required|string',
             'email' => 'required|email|unique:users,email',
             'gender' => 'required|string',
-            'password' => ['required','confirmed', Password::min(8)->letters()->symbols()]
+            'password' => [
+                'required', 
+                Password::min(8)
+                ->letters()
+                ->symbols()
+                ]
         ];
     }
 }

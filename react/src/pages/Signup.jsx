@@ -136,7 +136,7 @@ const Signup = () => {
                                     </label>
                                 </div>
                                 <select
-                                    className="w-full outline-[#66d9c2]"
+                                    className="w-full outline-[#66d9c2] ring-1 ring-inset ring-gray-300 p-2 rounded-lg"
                                     ref={genderRef}
                                 >
                                     <option value="male" key="1">

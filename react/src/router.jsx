@@ -7,6 +7,7 @@ import GuestLayout from "./components/GuestLayout";
 import Home from "./pages/Home";
 import Account from "./pages/Account";
 import Wardrobe from "./pages/Wardrobe";
+import AccountForm from "./pages/AccountForm";
 
 const router = createBrowserRouter([
     {
@@ -24,6 +25,10 @@ const router = createBrowserRouter([
             {
                 path: "/account",
                 element: <Account />,
+            },
+            {
+                path: "/account/:nickname",
+                element: <AccountForm />,
             },
             {
                 path: "/wardrobe",
