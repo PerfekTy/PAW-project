@@ -5,7 +5,7 @@ import Dropdown from "../components/Dropdown";
 import logo from "../assets/logo.png";
 
 const DefaultLayout = () => {
-    const { token } = useStateContext();
+    const { token, notification } = useStateContext();
     if (!token) {
         return <Navigate to="/login" />;
     }
@@ -42,6 +42,9 @@ const DefaultLayout = () => {
             <div>
                 <main>
                     <Outlet />
+                    {notification && (
+                        <div className="notification">{notification}</div>
+                    )}
                 </main>
             </div>
         </div>

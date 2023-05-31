@@ -25,7 +25,6 @@ export const ContextProvider = ({ children }) => {
 
     const setNotification = (message) => {
         _setNotification(message);
-
         setTimeout(() => {
             _setNotification("");
         }, 5000);

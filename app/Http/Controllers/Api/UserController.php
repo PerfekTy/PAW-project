@@ -7,6 +7,10 @@ use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Request;
 
 class UserController extends Controller
 {
@@ -57,13 +61,27 @@ class UserController extends Controller
      
     public function update(UpdateUserRequest $request, User $user)
     {
-        $data = $request->validated();
-        if (isset($data['password'])) {
-            $data['password'] = bcrypt($data['password']);
-        }
-        $user->update($data);
+        // $data = $request->validated();
+        // if (isset($data['password'])) {
+        //     $data['password'] = bcrypt($data['password']);
+        // }
+        // $user->update($data);
+        
+        // return new UserResource($user);
 
-        return new UserResource($user);
+        $user = Auth::user();
+        $user->nickname = Request::input('nickname');
+        $user->fullname = Request::input('fullname');
+        $user->email = Request::input('email');
+
+        if ( ! Request::input('password') == '')
+        {
+            $user->password = bcrypt(Request::input('password'));
+        }
+    
+        $user->save();
+
+        return $user;
     }
 
     /**
@@ -74,8 +92,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        $user->delete();
-
-        return response("", 204);
+        $user = Auth::user();
+        User::destroy($user->id);
     }
 }

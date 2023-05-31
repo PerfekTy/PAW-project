@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -20,17 +22,17 @@ class UpdateUserRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed>
+     * @return array<string, mixed>sssss
      */
-    public function rules()
+    public function rules(User $user)
     {
         return [
-            'nickname' => 'required|string|max:55|unique:users,nickname',
-            'fullname' => 'required|string',
-            'email' => 'required|email|unique:users,email,'.$this->id,
-            'gender' => 'required|string',
+            'nickname' => 'sometimes|string|max:55',Rule::unique('users')->ignore($user->id),
+            'fullname' => 'sometimes|string',
+            'email' => 'sometimes|email',Rule::unique('users')->ignore($user->id),
             'password' => [
                 'confirmed', 
+                'sometimes',
                 Password::min(8)
                 ->letters()
                 ->symbols()
