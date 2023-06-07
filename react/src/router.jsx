@@ -8,6 +8,8 @@ import Home from "./pages/Home";
 import Account from "./pages/Account";
 import Wardrobe from "./pages/Wardrobe";
 import AccountForm from "./pages/AccountForm";
+import Delivery from "./pages/Delivery";
+import Payments from "./pages/Payments";
 
 const router = createBrowserRouter([
     {
@@ -23,12 +25,20 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: "/account",
+                path: "/account/details",
                 element: <Account />,
             },
             {
-                path: "/account/:nickname",
+                path: "/account/details/:nickname",
                 element: <AccountForm />,
+            },
+            {
+                path: "/account/delivery",
+                element: <Delivery />,
+            },
+            {
+                path: "/account/payment",
+                element: <Payments />,
             },
             {
                 path: "/wardrobe",

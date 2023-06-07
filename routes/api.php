@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\CardController as ControllersCardController;
+use App\Http\Resources\CardResource;
+use App\Models\Cards;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,8 +26,8 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::apiResource('/account', UserController::class);
-    Route::post('/accout/{nickname}', [UserController::class, 'update']);
+    Route::apiResource('/account/details', UserController::class);
+    Route::post('/account/details/{nickname}', [UserController::class, 'update']);
 });
 
 Route::post('/signup', [AuthController::class, 'signup']);

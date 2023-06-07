@@ -5,11 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Http\Requests\StoreUserRequest;
-use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 
 class UserController extends Controller
@@ -59,16 +56,8 @@ class UserController extends Controller
      */
 
      
-    public function update(UpdateUserRequest $request, User $user)
+    public function update(User $user)
     {
-        // $data = $request->validated();
-        // if (isset($data['password'])) {
-        //     $data['password'] = bcrypt($data['password']);
-        // }
-        // $user->update($data);
-        
-        // return new UserResource($user);
-
         $user = Auth::user();
         $user->nickname = Request::input('nickname');
         $user->fullname = Request::input('fullname');

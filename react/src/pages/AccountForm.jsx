@@ -21,7 +21,7 @@ const AccountForm = () => {
     if (nickname) {
         useEffect(() => {
             axiosClient
-                .get(`/account`)
+                .get(`/account/details`)
                 .then(({ data }) => {
                     setUser(data.data[0]);
                 })
@@ -35,10 +35,10 @@ const AccountForm = () => {
         e.preventDefault();
 
         axiosClient
-            .put(`/account/${nickname}`, user)
+            .put(`/account/details/${nickname}`, user)
             .then(() => {
                 setNotification("User was successfully updated");
-                navigate("/account");
+                navigate("/account/details");
             })
             .catch((err) => {
                 const response = err.response;

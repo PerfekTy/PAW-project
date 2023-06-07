@@ -20,18 +20,17 @@ const Delivery = (props) => {
     };
 
     return (
-        <div className="w-full pb-10">
+        <div className="w-full py-10">
             <div className="flex flex-col items-center">
-                <p
-                    className={
-                        !props.nickname
-                            ? "border-2 tracking-widest p-5 w-1/3 text-center mb-10 text-2xl"
-                            : "border-2 tracking-widest p-5 w-1/3 text-center text-2xl"
-                    }
-                >
+                <p className="border-2 tracking-widest p-5 w-1/3 text-center mb-10 text-2xl relative">
                     Delivery<span className="text-3xl">📦</span>
+                    <button className="bg-[#ffffff] border-2 border-b-0 border-l-0 absolute left-0 bottom-0 hover:bg-[#eee] mx-auto mt-5 p-2 px-4 cursor-pointer text-sm">
+                        <Link to={"/account/details"}>See account details</Link>
+                    </button>
+                    <button className="bg-[#ffffff] border-2 border-b-0 border-r-0 absolute right-0 bottom-0 hover:bg-[#eee] mx-auto mt-5 p-2 px-4 cursor-pointer text-sm">
+                        <Link to={"/account/payment"}>See payment options</Link>
+                    </button>
                 </p>
-                {!props.nickname && <Loading />}
                 <div className="mt-4">
                     <p className="mb-2">
                         Choose your favorite way to get clothes ⬇️

@@ -93,7 +93,7 @@ export default function Dropdown() {
                         <Menu.Item>
                             {({ active }) => (
                                 <a
-                                    href="/account"
+                                    href="/account/details"
                                     className={classNames(
                                         active
                                             ? "bg-gray-100 text-gray-900"
