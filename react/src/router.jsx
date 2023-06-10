@@ -10,6 +10,8 @@ import Wardrobe from "./pages/Wardrobe";
 import AccountForm from "./pages/AccountForm";
 import Delivery from "./pages/Delivery";
 import Payments from "./pages/Payments";
+import SeeCards from "./pages/SeeCards";
+import Sell from "./pages/Sell";
 
 const router = createBrowserRouter([
     {
@@ -39,6 +41,14 @@ const router = createBrowserRouter([
             {
                 path: "/account/payment",
                 element: <Payments />,
+            },
+            {
+                path: "/cards",
+                element: <SeeCards />,
+            },
+            {
+                path: "/sell",
+                element: <Sell />,
             },
             {
                 path: "/wardrobe",

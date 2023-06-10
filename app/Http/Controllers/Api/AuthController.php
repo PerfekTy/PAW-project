@@ -24,7 +24,7 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('main')->plainTextToken;
-       
+
         return response(["user" => $user, "token" => $token]);
     }
 
@@ -47,8 +47,8 @@ class AuthController extends Controller
     {
         /** @var \App\Models\User $user */
         $user = $request->user();
-        if($user) {
-            $user->currentAccessToken() -> delete();
+        if ($user) {
+            $user->currentAccessToken()->delete();
         }
         return response('', 204);
     }

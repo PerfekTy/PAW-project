@@ -17,7 +17,12 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    
+
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
+
     public $table = "users";
     protected $primaryKey = 'id';
     protected $fillable = [

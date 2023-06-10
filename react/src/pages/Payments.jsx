@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { PatternFormat } from "react-number-format";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
 import "./cardStyle.css";
 import { cards } from "../helpers/creditCards";
-import axiosClient from "../axios-client";
-import { useStateContext } from "../contexts/ContextProvider";
 
 const americanExpressRegex = /^3[47]\d{0,13}/,
     discoverRegex = /^(?:6011|65\d{0,2}|64[4-9]\d?)\d{0,12}/,
@@ -30,7 +29,6 @@ AMERICAN_EXPRESS, 3714 496353 98431
 
 const Payments = () => {
     const { setNotification } = useStateContext();
-    const navigate = useNavigate();
     const [clicked, isClicked] = useState(false);
     const [errors, setErrors] = useState(null);
     const [card, setCard] = useState({
@@ -39,6 +37,7 @@ const Payments = () => {
         expiration: "",
         securecode: "",
     });
+
     const [cardStyle, setCardStyle] = useState("");
     const [cardColor, setCardColor] = useState({ light: "", dark: "" });
 
@@ -128,14 +127,12 @@ const Payments = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-        // resetForm();
+        resetForm();
 
         axiosClient
-            .post(`/account/payment`, card)
-            .then(({ data }) => {
-                console.log(data);
+            .post("/account/payment", card)
+            .then(() => {
                 setNotification("Card was successfully added");
-                navigate("/account/payment");
             })
             .catch((err) => {
                 const response = err.response;
@@ -156,6 +153,9 @@ const Payments = () => {
                         <Link to={"/account/delivery"}>
                             See delivery options
                         </Link>
+                    </button>
+                    <button className="bg-[#ffffff] border-2 border-b-0 border-r-0 absolute right-0 bottom-0 hover:bg-[#eee] mx-auto mt-5 p-2 px-4 cursor-pointer text-sm">
+                        <Link to={"/cards"}>See your cards</Link>
                     </button>
                 </p>
 
@@ -270,11 +270,9 @@ const Payments = () => {
                             value={"Reset"}
                             onClick={resetForm}
                         />
-                        <button className="bg-[#ffffff] border-2 hover:bg-[#eee] mx-auto p-2 px-4 rounded-md cursor-pointer">
-                            See your cards
-                        </button>
                     </div>
                 </form>
+
                 <div>
                     <div className="container preload">
                         <div
@@ -325,7 +323,7 @@ const Payments = () => {
                                         <text
                                             transform="matrix(1 0 0 1 60.106 295.0121)"
                                             id="svgnumber"
-                                            className="st2 st3 st4"
+                                            className="st2 st3 st4 select-none"
                                         >
                                             {!card.cardnumber
                                                 ? "0123 4567 8910 1112"
@@ -334,7 +332,7 @@ const Payments = () => {
                                         <text
                                             transform="matrix(1 0 0 1 54.1064 428.1723)"
                                             id="svgname"
-                                            className="st2 st5 st6"
+                                            className="st2 st5 st6 select-none"
                                         >
                                             {!card.fullname
                                                 ? "YOUR NAME"
@@ -342,19 +340,19 @@ const Payments = () => {
                                         </text>
                                         <text
                                             transform="matrix(1 0 0 1 54.1074 389.8793)"
-                                            className="st7 st5 st8"
+                                            className="st7 st5 st8 select-none"
                                         >
                                             cardholder name
                                         </text>
                                         <text
                                             transform="matrix(1 0 0 1 479.7754 388.8793)"
-                                            className="st7 st5 st8"
+                                            className="st7 st5 st8 select-none"
                                         >
                                             expiration
                                         </text>
                                         <text
                                             transform="matrix(1 0 0 1 65.1054 241.5)"
-                                            className="st7 st5 st8"
+                                            className="st7 st5 st8 select-none"
                                         >
                                             card number
                                         </text>
@@ -362,7 +360,7 @@ const Payments = () => {
                                             <text
                                                 transform="matrix(1 0 0 1 574.4219 433.8095)"
                                                 id="svgexpire"
-                                                className="st2 st5 st9"
+                                                className="st2 st5 st9 select-none"
                                             >
                                                 {!card.expiration
                                                     ? "01/23"
@@ -370,13 +368,13 @@ const Payments = () => {
                                             </text>
                                             <text
                                                 transform="matrix(1 0 0 1 479.3848 417.0097)"
-                                                className="st2 st10 st11"
+                                                className="st2 st10 st11 select-none"
                                             >
                                                 VALID
                                             </text>
                                             <text
                                                 transform="matrix(1 0 0 1 479.3848 435.6762)"
-                                                className="st2 st10 st11"
+                                                className="st2 st10 st11 select-none"
                                             >
                                                 THRU
                                             </text>
@@ -533,7 +531,7 @@ const Payments = () => {
                                         <text
                                             transform="matrix(1 0 0 1 621.999 227.2734)"
                                             id="svgsecurity"
-                                            className="st6 st7"
+                                            className="st6 st7 select-none"
                                         >
                                             {!card.securecode
                                                 ? "999"
@@ -542,7 +540,7 @@ const Payments = () => {
                                         <g className="st8">
                                             <text
                                                 transform="matrix(1 0 0 1 518.083 280.0879)"
-                                                className="st9 st6 st10"
+                                                className="st9 st6 st10 select-none"
                                             >
                                                 security code
                                             </text>
@@ -564,7 +562,7 @@ const Payments = () => {
                                         <text
                                             transform="matrix(1 0 0 1 59.5073 228.6099)"
                                             id="svgnameback"
-                                            className="st12 st13"
+                                            className="st12 st13 select-none"
                                         >
                                             {!card.fullname
                                                 ? "YOUR NAME"

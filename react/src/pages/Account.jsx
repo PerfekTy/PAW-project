@@ -18,13 +18,6 @@ const Account = () => {
     useEffect(() => {
         axiosClient.get("/account/details").then(({ data }) => {
             setUsers(data.data[0]);
-            // if (data.gender === "male") {
-            //     _setAvatar(male);
-            // } else if (data.gender === "female") {
-            //     _setAvatar(female);
-            // } else if (data.gender === "other") {
-            //     _setAvatar(other);
-            // }
         });
     }, []);
 

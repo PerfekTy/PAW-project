@@ -33,6 +33,10 @@
         animation: scale 1s ease-in-out infinite;
     }
 
+    .home-page {
+        @apply grid grid-cols-2 max-w-[1300px] justify-center mx-auto mt-6 gap-4;
+    }
+
     @keyframes fade-in {
         from {
             opacity: 0;

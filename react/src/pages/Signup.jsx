@@ -183,7 +183,7 @@ const Signup = () => {
                                 </div>
                                 <div className="mt-2">
                                     <input
-                                        id="password"
+                                        id="password_confirmation"
                                         name="password_confirmation"
                                         type="password"
                                         className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:[#66d9c2] outline-[#66d9c2] sm:text-lg sm:leading-6 pl-2 h-10"

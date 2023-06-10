@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Cards extends Authenticatable
+class Card extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,9 +17,22 @@ class Cards extends Authenticatable
      *
      * @var array<int, string>
      */
-    
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function getUserIDAttribute()
+    {
+        return auth()->id();
+    }
+
     public $table = "users_cards";
     protected $primaryKey = 'id';
+    protected $casts = [
+        'user_id' => 'integer',
+    ];
     protected $fillable = [
         'fullname',
         'cardnumber',

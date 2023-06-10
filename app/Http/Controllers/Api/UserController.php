@@ -33,7 +33,7 @@ class UserController extends Controller
         $data['password'] = bcrypt($data['password']);
         $user = User::create($data);
 
-        return response(new UserResource($user) , 201);
+        return response(new UserResource($user), 201);
     }
 
     /**
@@ -55,7 +55,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-     
+
     public function update(User $user)
     {
         $user = Auth::user();
@@ -63,11 +63,10 @@ class UserController extends Controller
         $user->fullname = Request::input('fullname');
         $user->email = Request::input('email');
 
-        if ( ! Request::input('password') == '')
-        {
+        if (!Request::input('password') == '') {
             $user->password = bcrypt(Request::input('password'));
         }
-    
+
         $user->save();
 
         return $user;
