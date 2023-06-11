@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CardController;
+use App\Http\Controllers\Api\PhotoController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,3 +36,5 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/account/payment', [CardController::class, 'saveCard']);
 
 Route::post('/account/details/{nickname}', [UserController::class, 'update']);
+
+Route::post('/upload', [PhotoController::class, 'store']);
