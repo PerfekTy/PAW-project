@@ -19,16 +19,15 @@ export default function Dropdown() {
     const [avatar, _setAvatar] = useState(null);
 
     useEffect(() => {
-        axiosClient.get("/user").then(({ data }) => {
-            setUser(data);
-            if (data.gender === "male") {
-                _setAvatar(male);
-            } else if (data.gender === "female") {
-                _setAvatar(female);
-            } else if (data.gender === "other") {
-                _setAvatar(other);
-            }
-        });
+        const user = JSON.parse(localStorage.getItem("user"));
+        setUser(user);
+        if (user.gender === "male") {
+            _setAvatar(male);
+        } else if (user.gender === "female") {
+            _setAvatar(female);
+        } else if (user.gender === "other") {
+            _setAvatar(other);
+        }
     }, []);
 
     const onLogout = (e) => {
@@ -39,6 +38,7 @@ export default function Dropdown() {
             .then(() => {
                 setUser({});
                 setToken(null);
+                localStorage.removeItem("user");
             })
             .catch((err) => {
                 console.log(err);

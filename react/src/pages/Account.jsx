@@ -28,6 +28,7 @@ const Account = () => {
 
         axiosClient.delete(`/account/details/${nickname}`).then(() => {
             setNotification("User was successfully deleted");
+            localStorage.removeItem("user");
             setTimeout(() => {
                 window.location.reload();
             }, 3000);

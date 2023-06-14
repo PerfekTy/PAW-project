@@ -29,6 +29,7 @@ AMERICAN_EXPRESS, 3714 496353 98431
 
 const Payments = () => {
     const { setNotification } = useStateContext();
+    const user_id = JSON.parse(localStorage.getItem("user"));
     const [clicked, isClicked] = useState(false);
     const [errors, setErrors] = useState(null);
     const [card, setCard] = useState({
@@ -36,6 +37,7 @@ const Payments = () => {
         cardnumber: "",
         expiration: "",
         securecode: "",
+        user_id: user_id.id,
     });
 
     const [cardStyle, setCardStyle] = useState("");

@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CardController;
-use App\Http\Controllers\Api\PhotoController;
+use App\Http\Controllers\Api\ClothesController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -23,6 +23,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::get('/wardrobe', [ClothesController::class, 'getClothes']);
+    Route::get('/home', [ClothesController::class, 'getAllClothes']);
+
+    Route::get('/photos', [ClothesController::class, 'getPhotos']);
+
     Route::get('/cards', [CardController::class, 'getCards']);
     Route::delete('/cards', [CardController::class, 'destroyCard']);
 
@@ -37,4 +42,6 @@ Route::post('/account/payment', [CardController::class, 'saveCard']);
 
 Route::post('/account/details/{nickname}', [UserController::class, 'update']);
 
-Route::post('/upload', [PhotoController::class, 'store']);
+Route::post('/upload', [ClothesController::class, 'addPhoto']);
+
+Route::post('/sell', [ClothesController::class, 'store']);

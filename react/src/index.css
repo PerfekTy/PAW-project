@@ -37,6 +37,28 @@
         @apply grid grid-cols-2 max-w-[1300px] justify-center mx-auto mt-6 gap-4;
     }
 
+    .rainbow {
+        background: linear-gradient(
+            45deg,
+            #ff0000,
+            #ff8000,
+            #ffff00,
+            #80ff00,
+            #00ff00,
+            #00ff80,
+            #00ffff,
+            #0080ff,
+            #0000ff,
+            #8000ff,
+            #ff00ff,
+            #ff0080,
+            #ff0000
+        );
+        background-size: 200% 200%;
+        background-clip: text;
+        animation: rainbow 2s ease-in-out infinite;
+    }
+
     @keyframes fade-in {
         from {
             opacity: 0;
@@ -61,6 +83,18 @@
         }
         to {
             transform: scale(1.15);
+        }
+    }
+
+    @keyframes rainbow {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 50%;
+        }
+        100% {
+            background-position: 0% 50%;
         }
     }
 }

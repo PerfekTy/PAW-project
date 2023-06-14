@@ -18,6 +18,16 @@ class Cloth extends Authenticatable
      * @var array<int, string>
      */
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
     public $table = "clothes";
     protected $primaryKey = 'id';
     protected $fillable = [
@@ -25,7 +35,9 @@ class Cloth extends Authenticatable
         'brand',
         'price',
         'size',
+        'gender',
         'description',
+        'user_id',
     ];
 
     public $timestamps = false;

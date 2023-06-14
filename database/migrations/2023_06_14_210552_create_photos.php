@@ -14,7 +14,10 @@ return new class extends Migration {
     {
         Schema::create('photos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('cloth_id');
+            $table->foreign('cloth_id')->references('id')->on('clothes');
             $table->string('path');
+            $table->string('file_name');
         });
     }
 

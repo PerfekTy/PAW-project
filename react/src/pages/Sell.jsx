@@ -10,6 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Sell = () => {
+    const user_id = JSON.parse(localStorage.getItem("user"));
     const sliderSettings = {
         dots: true,
         infinite: true,
@@ -21,11 +22,13 @@ const Sell = () => {
     };
 
     const [cloth, setCloth] = useState({
-        clothname: "",
-        clothbrand: "",
-        clothprice: "",
-        clothsize: "",
-        clothsex: "",
+        name: "",
+        brand: "",
+        price: "",
+        size: "",
+        gender: "",
+        description: "",
+        user_id: user_id.id,
     });
 
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -34,28 +37,43 @@ const Sell = () => {
 
     const handleFileSelect = (event) => {
         const files = Array.from(event.target.files);
+
         files.forEach((file) => {
-            if (
-                !selectedFiles.find(
-                    (selectedFile) => selectedFile.name === file.name
-                )
-            ) {
-                setSelectedFiles((prevSelectedFiles) => [
-                    ...prevSelectedFiles,
-                    file,
-                ]);
-            }
+            setSelectedFiles((prevSelectedFiles) => [
+                ...prevSelectedFiles,
+                file,
+            ]);
         });
+    };
+
+    const handleFileUpload = () => {
+        const formData = new FormData();
+        selectedFiles.forEach((file) => {
+            formData.append("files[]", file);
+        });
+
+        axiosClient
+            .post("/upload", formData)
+            .then(() => {})
+            .catch((err) => {
+                const response = err.response;
+                if (response && response.status === 422) {
+                    if (response.data.errors) {
+                        setErrors(response.data.errors);
+                    }
+                }
+            });
     };
 
     const resetForm = () => {
         setCloth({
             ...cloth,
-            clothbrand: "",
-            clothprice: "",
-            clothsize: "",
-            clothname: "",
-            clothsex: "",
+            brand: "",
+            price: "",
+            size: "",
+            name: "",
+            gender: "",
+            description: "",
         });
 
         setSelectedFiles([]);
@@ -63,9 +81,6 @@ const Sell = () => {
 
     const onSubmit = (e) => {
         e.preventDefault();
-
-        const formData = new FormData();
-        formData.set("photo[]", selectedFiles);
 
         axiosClient
             .post("/sell", cloth)
@@ -81,44 +96,35 @@ const Sell = () => {
                 }
             });
 
-        axiosClient
-            .post("/upload", selectedFiles)
-            .then()
-            .catch((err) => {
-                const response = err.response;
-                if (response && response.status === 422) {
-                    if (response.data.errors) {
-                        setErrors(response.data.errors);
-                    }
-                }
-            });
-
-        console.log(selectedFiles);
-        console.log(formData);
-        // resetForm();
+        handleFileUpload();
+        resetForm();
     };
 
     return (
         <div>
-            <div className="my-10 mb-20 flex justify-center">
+            <div className="my-10 mb-2 flex justify-center">
                 <img src={clothLogo} alt="clothlogo" width={170} />
             </div>
             {errors && (
-                <div className="alert w-1/2">
-                    {Object.keys(errors).map((key) => (
-                        <p key={key}>{errors[key][0]}</p>
-                    ))}
-                </div>
+                <p className="alert w-1/4 mb-10">
+                    {errors && <p>{errors.price}</p>}
+                    {errors && <p>{errors.gender}</p>}
+                    {errors && <p>{errors.size}</p>}
+                </p>
             )}
+
             <div className="flex justify-center gap-40">
                 <form className="w-[400px]" onSubmit={onSubmit}>
-                    <div className="flex w-full items-center justify-center  relative">
+                    <div className="flex w-full items-center justify-center relative">
                         <label
                             htmlFor="cloth"
                             className="absolute -top-5 text-sm left-0"
                         >
                             Cloth Name
                         </label>
+                        <p className="-top-5 right-0 absolute text-[14px] text-[red]">
+                            {errors && errors.name}
+                        </p>
                         <input
                             type="text"
                             id="cloth"
@@ -127,36 +133,39 @@ const Sell = () => {
                             onChange={(e) =>
                                 setCloth({
                                     ...cloth,
-                                    clothname: e.target.value,
+                                    name: e.target.value,
                                 })
                             }
-                            value={cloth.clothname}
+                            value={cloth.name}
                         />
                     </div>
                     <div className="flex w-full items-center justify-center mt-10 relative">
                         <label
-                            htmlFor="clothbrand"
+                            htmlFor="brand"
                             className="absolute -top-5 text-sm left-0"
                         >
                             Cloth Brand
                         </label>
+                        <p className="-top-5 right-0 absolute text-[14px] text-[red]">
+                            {errors && errors.brand}
+                        </p>
                         <input
                             placeholder="👚"
                             className="border-2 outline-[#66d9c2] p-2 text-md w-full"
-                            id="clothbrand"
+                            id="brand"
                             onChange={(e) =>
                                 setCloth({
                                     ...cloth,
-                                    clothbrand: e.target.value,
+                                    brand: e.target.value,
                                 })
                             }
-                            value={cloth.clothbrand}
+                            value={cloth.brand}
                         />
                     </div>
                     <div className="flex gap-2 pb-5">
                         <div className="flex w-full items-center justify-center mt-10 relative">
                             <label
-                                htmlFor="clothprice"
+                                htmlFor="price"
                                 className="absolute -top-5 text-sm left-0"
                             >
                                 Cloth Price
@@ -164,14 +173,14 @@ const Sell = () => {
                             <input
                                 placeholder="💲"
                                 className="border-2 outline-[#66d9c2] p-2 text-md w-full"
-                                id="clothprice"
+                                id="price"
                                 onChange={(e) =>
                                     setCloth({
                                         ...cloth,
-                                        clothprice: e.target.value,
+                                        price: e.target.value,
                                     })
                                 }
-                                value={cloth.clothprice}
+                                value={cloth.price}
                             />
                         </div>
                         <div className="flex w-full items-center justify-center mt-10 relative">
@@ -185,11 +194,14 @@ const Sell = () => {
                                 onChange={(e) =>
                                     setCloth({
                                         ...cloth,
-                                        clothsex: e.target.value,
+                                        gender: e.target.value,
                                     })
                                 }
                                 className="w-full outline-[#66d9c2] border-2 ring-inset ring-gray-300 p-2"
                             >
+                                <option value="Sex" disabled selected>
+                                    👦👧
+                                </option>
                                 <option value="Male">Male</option>
                                 <option value="Female">Female</option>
                                 <option value="Unisex">Unisex</option>
@@ -197,7 +209,7 @@ const Sell = () => {
                         </div>
                         <div className="flex w-full items-center justify-center mt-10 relative">
                             <label
-                                htmlFor="clothsize"
+                                htmlFor="size"
                                 className="absolute -top-5 text-sm left-0"
                             >
                                 Cloth Size
@@ -207,11 +219,15 @@ const Sell = () => {
                                 onChange={(e) =>
                                     setCloth({
                                         ...cloth,
-                                        clothsize: e.target.value,
+                                        size: e.target.value,
                                     })
                                 }
                                 className="w-full outline-[#66d9c2] border-2 ring-inset ring-gray-300 p-2"
+                                defaultValue="size"
                             >
+                                <option value="size" disabled selected>
+                                    🔍
+                                </option>
                                 <option value="S">S</option>
                                 <option value="M">M</option>
                                 <option value="L">L</option>
@@ -223,16 +239,25 @@ const Sell = () => {
 
                     <div className="flex w-full flex-col items-center justify-center mt-5 relative">
                         <label
-                            htmlFor="clothsize"
+                            htmlFor="size"
                             className="absolute -top-5 text-sm left-0"
                         >
                             Cloth description
                         </label>
+                        <p className="-top-5 right-0 absolute text-[14px] text-[red]">
+                            {errors && errors.description}
+                        </p>
                         <textarea
                             placeholder="ex. Brand new, almost no damages, if you're interested text me."
                             cols="30"
                             rows="10"
                             className="w-full outline-[#66d9c2] border-2 ring-inset ring-gray-300 p-2"
+                            onChange={(e) =>
+                                setCloth({
+                                    ...cloth,
+                                    description: e.target.value,
+                                })
+                            }
                         ></textarea>
                         <input
                             type="reset"
@@ -254,7 +279,6 @@ const Sell = () => {
                             <input
                                 type="file"
                                 className="border-2 outline-[#66d9c2] p-2 text-md w-full"
-                                name="photo[]"
                                 id="photo"
                                 onChange={handleFileSelect}
                                 accept="image/png, image/jpg, image/jpeg"

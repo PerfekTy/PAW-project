@@ -38,6 +38,7 @@ class Card extends Authenticatable
         'cardnumber',
         'expiration',
         'securecode',
+        'user_id',
     ];
 
     public $timestamps = false;

@@ -19,9 +19,7 @@ class Photo extends Authenticatable
      */
     public $table = "photos";
     protected $primaryKey = 'id';
-    protected $fillable = [
-        'path'
-    ];
+    protected $fillable = ['filename', 'path', 'cloth_id'];
 
     public $timestamps = false;
 }

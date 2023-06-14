@@ -30,6 +30,7 @@ const Signup = () => {
             .then(({ data }) => {
                 setUser(data.user);
                 setToken(data.token);
+                localStorage.setItem("user", JSON.stringify(data.user));
             })
             .catch((err) => {
                 const response = err.response;

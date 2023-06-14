@@ -34,6 +34,15 @@ const SeeCards = () => {
                         <th className="border-2 p-3 px-10">Card Number</th>
                         <th className="border-2 p-3 px-10">Expiration Date</th>
                         <th className="border-2 p-3 px-10">Secure Code</th>
+                        <th>
+                            {" "}
+                            <button
+                                onClick={onDeleteClick}
+                                className="p-3 ml-5 bg-[#d96666] hover:bg-[#9e4c4c] px-10 rounded-md"
+                            >
+                                Delete all cards
+                            </button>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,14 +53,6 @@ const SeeCards = () => {
                             <td className="border-2 p-3">{card.cardnumber}</td>
                             <td className="border-2 p-3">{card.expiration}</td>
                             <td className="border-2 p-3">{card.securecode}</td>
-                            <td>
-                                <button
-                                    onClick={onDeleteClick}
-                                    className="p-3 ml-5 bg-[#d96666] hover:bg-[#9e4c4c] px-10 rounded-md"
-                                >
-                                    Delete
-                                </button>
-                            </td>
                         </tr>
                     ))}
                 </tbody>

@@ -23,6 +23,12 @@ class User extends Authenticatable
         return $this->hasMany(Card::class);
     }
 
+    public function clothes()
+    {
+        return $this->hasMany(Cloth::class);
+    }
+
+
     public $table = "users";
     protected $primaryKey = 'id';
     protected $fillable = [

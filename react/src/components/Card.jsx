@@ -3,10 +3,7 @@ import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaTshirt } from "react-icons/fa";
 import { IoPricetagsOutline } from "react-icons/io5";
 
-import exampleUserPhoto from "../assets/example.jpeg";
-import exampleUserAvatar from "../assets/userPhoto.jpeg";
-
-export const Card = () => {
+export const Card = (props) => {
     const [clicked, isClicked] = useState(false);
 
     const likeIconHander = () => {
@@ -17,16 +14,17 @@ export const Card = () => {
         <div className="border rounded-lg mb-4 p-4 relative hover:bg-[#34495e10] cursor-pointer">
             <div>
                 <div className="flex items-center mb-2">
-                    <img
-                        className="rounded-3xl mr-2"
-                        src={exampleUserAvatar}
-                        alt="user-avatar"
-                        width={25}
-                    />
-                    <p>@user</p>
+                    <p className="mr-2">Posted by:</p>{" "}
+                    <span className="rainbow italic text-[20px]">
+                        {props.user}
+                    </span>
                 </div>
                 <div>
-                    <img src={exampleUserPhoto} alt="item" width="auto" />
+                    <img
+                        src={`../../../storage/app/${props.photo}`}
+                        alt=""
+                        width="auto"
+                    />
                 </div>
                 <div>
                     {clicked ? (
@@ -46,22 +44,22 @@ export const Card = () => {
                 </div>
                 <div>
                     <div className="mt-2">
-                        <h5 className="select-none">Niebieska kurteczka</h5>
+                        <h5 className="select-none">{props.name}</h5>
                         <h5 className="text-xl select-none">
                             <span>&#36;</span>
-                            350,00
+                            {`${props.price},00`}
                         </h5>
                         <h5 className="text-sm flex items-center select-none">
                             <span className="mr-1">
                                 <FaTshirt />
                             </span>
-                            37
+                            {props.size}
                         </h5>
                         <h5 className="text-sm flex items-center">
                             <span className="mr-1">
                                 <IoPricetagsOutline />
                             </span>
-                            Karl Lagerfeld
+                            {props.brand}
                         </h5>
                     </div>
                 </div>
