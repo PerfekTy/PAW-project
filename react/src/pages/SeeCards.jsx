@@ -1,6 +1,7 @@
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const SeeCards = () => {
     const { setNotification } = useStateContext();
@@ -34,14 +35,19 @@ const SeeCards = () => {
                         <th className="border-2 p-3 px-10">Card Number</th>
                         <th className="border-2 p-3 px-10">Expiration Date</th>
                         <th className="border-2 p-3 px-10">Secure Code</th>
-                        <th>
-                            {" "}
+                        <th className="flex flex-col gap-2">
                             <button
                                 onClick={onDeleteClick}
                                 className="p-3 ml-5 bg-[#d96666] hover:bg-[#9e4c4c] px-10 rounded-md"
                             >
                                 Delete all cards
                             </button>
+                            <Link
+                                to="/account/payment"
+                                className="p-3 ml-5 bg-[#66d9c2] hover:bg-[#4aa996] px-10 rounded-md"
+                            >
+                                Add more cards
+                            </Link>
                         </th>
                     </tr>
                 </thead>

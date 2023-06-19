@@ -37,7 +37,7 @@ class Cloth extends Authenticatable
         'size',
         'gender',
         'description',
-        'user_id',
+        'user_nickname',
     ];
 
     public $timestamps = false;

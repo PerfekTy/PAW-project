@@ -83,4 +83,10 @@ class UserController extends Controller
         $user = Auth::user();
         User::destroy($user->id);
     }
+
+    public function getAllUsers(User $user)
+    {
+        $user = User::all();
+        return $user;
+    }
 }

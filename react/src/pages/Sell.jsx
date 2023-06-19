@@ -10,7 +10,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
 const Sell = () => {
-    const user_id = JSON.parse(localStorage.getItem("user"));
+    const user_nickname = JSON.parse(localStorage.getItem("user"));
     const sliderSettings = {
         dots: true,
         infinite: true,
@@ -28,7 +28,7 @@ const Sell = () => {
         size: "",
         gender: "",
         description: "",
-        user_id: user_id.id,
+        nickname: user_nickname.nickname,
     });
 
     const [selectedFiles, setSelectedFiles] = useState([]);

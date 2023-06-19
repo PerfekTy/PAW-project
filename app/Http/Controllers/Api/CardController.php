@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCardRequest;
 use App\Models\Card;
-use Illuminate\Support\Facades\Auth;
 
 class CardController extends Controller
 {

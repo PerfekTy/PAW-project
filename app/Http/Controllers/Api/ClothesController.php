@@ -7,30 +7,27 @@ use App\Http\Requests\StoreClothesRequest;
 use App\Models\Cloth;
 use App\Models\Photo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ClothesController extends Controller
 {
     public function addPhoto(Request $request)
     {
-
         $files = $request->file('files');
-        $clothID = $request->input('cloth_id');
         foreach ($files as $file) {
-            $path = $file->store('uploads');
-
+            $path = $file->store('public');
+            $fileName = basename($path);
             $uploadedFile = new Photo;
             $uploadedFile->filename = $file->getClientOriginalName();
-            $uploadedFile->path = $path;
-            $uploadedFile->cloth_id = $clothID;
+            $uploadedFile->path = $fileName;
             $uploadedFile->save();
-
         }
     }
 
     public function store(StoreClothesRequest $request)
     {
         $data = $request->validated();
-        $userID = $request->input('user_id');
+        $userID = $request->input('nickname');
 
         $cloth = Cloth::create([
             'name' => $data['name'],
@@ -39,7 +36,7 @@ class ClothesController extends Controller
             'gender' => $data['gender'],
             'size' => $data['size'],
             'description' => $data['description'],
-            'user_id' => $userID,
+            'user_nickname' => $userID,
         ]);
 
         return response(['cloth' => $cloth]);
@@ -47,13 +44,18 @@ class ClothesController extends Controller
     public function getClothes()
     {
         $currentUser = auth()->user();
-        $cards = Cloth::where('user_id', $currentUser->id)->get();
+        $cards = Cloth::where('user_nickname', $currentUser->nickname)->get();
         return $cards;
     }
 
     public function getPhotos()
     {
         $photos = Photo::all();
+
+        foreach ($photos as $photo) {
+            $photo->url = Storage::url($photo->path);
+        }
+
         return $photos;
     }
 

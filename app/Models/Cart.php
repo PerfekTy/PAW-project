@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Photo extends Authenticatable
+class Cart extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
@@ -17,12 +17,21 @@ class Photo extends Authenticatable
      *
      * @var array<int, string>
      */
-    public $table = "photos";
+
+    public function clothes()
+    {
+        return $this->hasMany(Cloth::class);
+    }
+
+    public $table = "cart";
     protected $primaryKey = 'id';
     protected $fillable = [
-        'filename',
-        'path',
-        'cloth_id'
+        'id',
+        'name',
+        'brand',
+        'price',
+        'size',
+        'user_nickname',
     ];
 
     public $timestamps = false;

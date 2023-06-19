@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('cloth_id');
             $table->foreign('cloth_id')->references('id')->on('clothes');
             $table->string('path');
-            $table->string('file_name');
+            $table->string('filename');
         });
     }
 

@@ -25,6 +25,10 @@
         @apply rounded-tr-3xl rounded-tl-3xl bg-[#daecea] border-4 border-b-0 border-l-0 border-t-0 border-[#b2e9d3] p-3 pr-16 pl-16 text-center hover:bg-[#edfefb];
     }
 
+    .rotation {
+        animation: rotation 3s ease-in-out infinite;
+    }
+
     .notification {
         @apply fixed right-4 bottom-4 z-[100] px-6 py-6 bg-[#00a762] text-lg text-white rounded-lg;
     }
@@ -83,6 +87,12 @@
         }
         to {
             transform: scale(1.15);
+        }
+    }
+
+    @keyframes rotation {
+        100% {
+            transform: rotate(360deg);
         }
     }
 

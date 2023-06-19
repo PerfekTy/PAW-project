@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CardController;
+use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ClothesController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
@@ -23,13 +24,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+
+    Route::get('/cart', [CartController::class, 'getItems']);
     Route::get('/wardrobe', [ClothesController::class, 'getClothes']);
     Route::get('/home', [ClothesController::class, 'getAllClothes']);
-
     Route::get('/photos', [ClothesController::class, 'getPhotos']);
-
     Route::get('/cards', [CardController::class, 'getCards']);
+
     Route::delete('/cards', [CardController::class, 'destroyCard']);
+    Route::delete('/cart', [CartController::class, 'deleteItemFromCart']);
 
     Route::apiResource('/account/details', UserController::class);
 });
@@ -45,3 +48,5 @@ Route::post('/account/details/{nickname}', [UserController::class, 'update']);
 Route::post('/upload', [ClothesController::class, 'addPhoto']);
 
 Route::post('/sell', [ClothesController::class, 'store']);
+
+Route::post('/home', [CartController::class, 'saveItemsToCart']);
