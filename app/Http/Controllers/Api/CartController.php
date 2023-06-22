@@ -4,37 +4,71 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCartRequest;
+use App\Http\Requests\StoreToCartRequest;
 use App\Models\Cart;
+use App\Models\Checkout;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class CartController extends Controller
 {
     public function getItems()
     {
-        $currentUser = auth()->user()->nickname;
-        $items = Cart::where('user_nickname', $currentUser)->get();
+        $currentUser = auth()->user()->id;
+        $items = Cart::where('user_id', $currentUser)->get();
+
         return $items;
     }
 
-    public function saveItemsToCart(StoreCartRequest $request)
+    public function saveItemsToCart(StoreToCartRequest $request, $id)
     {
-        $data = $request->all();
-        $userID = $request->input('nickname');
+        $user = auth()->user();
+        $cartItem = $user->cartItems()->where('id', $id)->first();
 
-        $card = Cart::create([
-            'name' => $data['name'],
-            'brand' => $data['brand'],
-            'price' => $data['price'],
-            'size' => $data['size'],
-            'user_nickname' => $userID,
+        if ($cartItem) {
+            return $cartItem;
+        } else {
+            $data = $request->all();
+            $userID = $request->input('user_id');
+
+            $card = Cart::create([
+                'name' => $data['name'],
+                'brand' => $data['brand'],
+                'price' => $data['price'],
+                'size' => $data['size'],
+                'user_id' => $userID,
+            ]);
+
+            return response(['card' => $card]);
+        }
+    }
+
+    public function storeCart(StoreCartRequest $request)
+    {
+        $userID = $request->input('user_id');
+
+        $checkout = Checkout::create([
+            'user_id' => $userID,
+            'date' => now(),
         ]);
 
-        return response(['card' => $card]);
+        return response(['checkout' => $checkout]);
     }
 
-    public function deleteItemFromCart()
+    public function deleteItemFromCart($id)
     {
-        $currentUser = auth()->user()->nickname;
-        $items = Cart::where('user_nickname', $currentUser)->delete();
-        return $items;
+        $cartItem = Cart::where('id', $id)->first();
+
+        if ($cartItem) {
+            $cartItem->delete();
+        }
+    }
+
+    public function deleteAllItemsFromCart()
+    {
+        $currentUser = auth()->user()->id;
+        $cart = Cart::where('user_id', $currentUser)->delete();
+
+        return $cart;
     }
 }

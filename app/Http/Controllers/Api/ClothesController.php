@@ -8,6 +8,8 @@ use App\Models\Cloth;
 use App\Models\Photo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
+
 
 class ClothesController extends Controller
 {
@@ -15,11 +17,13 @@ class ClothesController extends Controller
     {
         $files = $request->file('files');
         foreach ($files as $file) {
-            $path = $file->store('public');
-            $fileName = basename($path);
+            $path = $file->move('public/uploads');
+            $fileURL = asset($path);
+            $cloth_id = $request->input('id');
             $uploadedFile = new Photo;
-            $uploadedFile->filename = $file->getClientOriginalName();
-            $uploadedFile->path = $fileName;
+            $uploadedFile->fileName = Str::random(20) . '.' . $file->getClientOriginalExtension();
+            $uploadedFile->path = $fileURL;
+            $uploadedFile->cloth_id = $cloth_id;
             $uploadedFile->save();
         }
     }
@@ -63,5 +67,11 @@ class ClothesController extends Controller
     {
         $clothes = Cloth::all();
         return $clothes;
+    }
+
+    public function getCurrentCloth($id)
+    {
+        $item = Cloth::find($id);
+        return $item;
     }
 }

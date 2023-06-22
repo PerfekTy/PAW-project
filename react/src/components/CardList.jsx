@@ -5,7 +5,6 @@ import { Card } from "../components/Card";
 
 const CardList = () => {
     const [clothes, setClothes] = useState([]);
-    const [photos, setPhotos] = useState([]);
 
     useEffect(() => {
         axiosClient.get("/home").then(({ data }) => {
@@ -13,7 +12,18 @@ const CardList = () => {
         });
 
         axiosClient.get("/photos").then(({ data }) => {
-            setPhotos(data);
+            const pathMap = {};
+            Object.keys(data).forEach((key) => {
+                const id = data[key].id;
+                const path = data[key].path;
+                pathMap[id] = path;
+            });
+            setClothes((prevClothes) =>
+                prevClothes.map((clothing) => ({
+                    ...clothing,
+                    path: pathMap[clothing.id],
+                }))
+            );
         });
     }, []);
 
@@ -28,6 +38,7 @@ const CardList = () => {
                         size={clothes[key].size}
                         id={clothes[key].id}
                         user={clothes[key].user_nickname}
+                        path={clothes[key].path}
                     />
                 </div>
             ))}

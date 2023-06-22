@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/home/{id}', [CartController::class, 'saveItemsToCart']);
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
@@ -30,9 +31,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', [ClothesController::class, 'getAllClothes']);
     Route::get('/photos', [ClothesController::class, 'getPhotos']);
     Route::get('/cards', [CardController::class, 'getCards']);
+    Route::get('/home/{id}', [ClothesController::class, 'getCurrentCloth']);
+    Route::get('/sell/{id}', [ClothesController::class, 'getCurrentCloth']);
 
     Route::delete('/cards', [CardController::class, 'destroyCard']);
-    Route::delete('/cart', [CartController::class, 'deleteItemFromCart']);
+    Route::delete('/cart/{id}', [CartController::class, 'deleteItemFromCart']);
+    Route::delete('/cart', [CartController::class, 'deleteAllItemsFromCart']);
 
     Route::apiResource('/account/details', UserController::class);
 });
@@ -49,4 +53,4 @@ Route::post('/upload', [ClothesController::class, 'addPhoto']);
 
 Route::post('/sell', [ClothesController::class, 'store']);
 
-Route::post('/home', [CartController::class, 'saveItemsToCart']);
+Route::post('/cart', [CartController::class, 'storeCart']);

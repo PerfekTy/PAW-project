@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { AiFillHeart, AiOutlineHeart } from "react-icons/ai";
 import { FaTshirt } from "react-icons/fa";
 import { IoPricetagsOutline } from "react-icons/io5";
@@ -11,7 +11,6 @@ export const Card = (props) => {
     const { setNotification } = useStateContext();
     const [clicked, isClicked] = useState(false);
     const [cart, setCart] = useState(false);
-    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem("user"));
 
     const item = {
@@ -19,7 +18,7 @@ export const Card = (props) => {
         brand: props.brand,
         size: props.size,
         price: props.price,
-        nickname: user.nickname,
+        user_id: user.id,
     };
 
     const likeIconHander = () => {
@@ -30,27 +29,16 @@ export const Card = (props) => {
         setCart(!cart);
         if (!cart) {
             axiosClient
-                .post("/home", item)
+                .post(`/home/${props.id}`, item)
                 .then(() => {
                     setNotification("Added to cart");
                 })
-                .catch(() => {
-                    setNotification(
-                        "You can't add the same item to cart twice!"
-                    );
-                });
+                .catch(() => {});
         }
     };
 
-    const itemNavigate = () => {
-        navigate("/home/" + props.id);
-    };
-
     return (
-        <div
-            className="border rounded-lg mb-4 p-4 relative hover:bg-[#34495e10] cursor-pointer grow"
-            onClick={itemNavigate}
-        >
+        <div className="border rounded-lg mb-4 p-4 relative hover:bg-[#34495e10] grow">
             <div>
                 <div className="flex items-center mb-2">
                     {user.nickname === props.user ? (
@@ -69,14 +57,11 @@ export const Card = (props) => {
                     <span className="rainbow italic text-[20px]"></span>
                 </div>
                 <div>
-                    {/* {Object.keys(props.photos).map((key) => (
-                        <div key={props.photos[key].id}>
-                            <img
-                                src={props.photos[key].path}
-                                alt={props.photos[key].filename}
-                            />
-                        </div>
-                    ))} */}
+                    <img
+                        src={props.path}
+                        alt="photo"
+                        className="rounded-lg w-full h-[400px] object-cover"
+                    />
                 </div>
                 <div>
                     {clicked ? (
@@ -113,7 +98,9 @@ export const Card = (props) => {
                 </div>
                 <div>
                     <div className="mt-2">
-                        <h5 className="select-none">{props.name}</h5>
+                        <h5 className="select-non cursor-pointer">
+                            <Link to={`/home/${props.id}`}>{props.name}</Link>
+                        </h5>
                         <h5 className="text-xl select-none">
                             <span>&#36;</span>
                             {`${props.price},00`}

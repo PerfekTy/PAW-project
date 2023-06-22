@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../axios-client";
 import { BiDollar } from "react-icons/bi";
+import { useStateContext } from "../contexts/ContextProvider";
 
 import CartItem from "../components/CartItem";
 const Cart = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
     const [items, setItems] = useState([]);
-
+    const { setNotification } = useStateContext();
     useEffect(() => {
         axiosClient
-            .get("/cart")
+            .get("/cart/")
             .then(({ data }) => {
                 setItems(data);
             })
@@ -26,6 +28,26 @@ const Cart = () => {
         total += price[i];
     }
 
+    const payload = {
+        user_id: user.id,
+    };
+
+    const checkout = () => {
+        axiosClient
+            .post("/cart", payload)
+            .then(() => {
+                axiosClient.delete(`/cart`).then(() => {
+                    setNotification("Checkout done");
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                });
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    };
+
     return (
         <div className="h-screen bg-gray-100 pt-20 flex justify-center">
             <div className="flex flex-col gap-4">
@@ -36,6 +58,7 @@ const Cart = () => {
                             brand={items[key].brand}
                             price={items[key].price}
                             size={items[key].size}
+                            id={items[key].id}
                         />
                     </div>
                 ))}
@@ -63,10 +86,13 @@ const Cart = () => {
                             Total:
                             <p className=" text-[#717883] flex items-center">
                                 <BiDollar className="-mr-1" size={22} />
-                                {parseFloat(total * 1.23 + 4.99)}
+                                {parseFloat(total * 1.23 + 4.99).toFixed(2)}
                             </p>
                         </div>
-                        <button className="bg-[#66d9c2] hover:bg-[#4aa996] p-2 rounded-md">
+                        <button
+                            onClick={checkout}
+                            className="bg-[#66d9c2] hover:bg-[#4aa996] p-2 rounded-md"
+                        >
                             Checkout
                         </button>
                     </div>

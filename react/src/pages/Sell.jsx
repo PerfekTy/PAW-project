@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Slider from "react-slick";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import axiosClient from "../axios-client";
@@ -11,6 +13,7 @@ import "slick-carousel/slick/slick-theme.css";
 
 const Sell = () => {
     const user_nickname = JSON.parse(localStorage.getItem("user"));
+    const navigate = useNavigate();
     const sliderSettings = {
         dots: true,
         infinite: true,
@@ -29,6 +32,7 @@ const Sell = () => {
         gender: "",
         description: "",
         nickname: user_nickname.nickname,
+        id: "",
     });
 
     const [selectedFiles, setSelectedFiles] = useState([]);
@@ -46,15 +50,19 @@ const Sell = () => {
         });
     };
 
-    const handleFileUpload = () => {
+    const onSubmitPhoto = (e) => {
+        e.preventDefault();
         const formData = new FormData();
         selectedFiles.forEach((file) => {
             formData.append("files[]", file);
+            formData.append("id", cloth.id);
         });
 
         axiosClient
             .post("/upload", formData)
-            .then(() => {})
+            .then(() => {
+                navigate("/home");
+            })
             .catch((err) => {
                 const response = err.response;
                 if (response && response.status === 422) {
@@ -65,26 +73,18 @@ const Sell = () => {
             });
     };
 
-    const resetForm = () => {
-        setCloth({
-            ...cloth,
-            brand: "",
-            price: "",
-            size: "",
-            name: "",
-            gender: "",
-            description: "",
-        });
-
-        setSelectedFiles([]);
-    };
-
-    const onSubmit = (e) => {
+    const onSubmitCloth = (e) => {
         e.preventDefault();
 
         axiosClient
             .post("/sell", cloth)
-            .then(() => {
+            .then(({ data }) => {
+                const clothId = data.cloth.id;
+                setCloth({
+                    ...cloth,
+                    id: clothId,
+                });
+
                 setNotification("Cloth was successfully added");
             })
             .catch((err) => {
@@ -95,15 +95,16 @@ const Sell = () => {
                     }
                 }
             });
-
-        handleFileUpload();
-        resetForm();
     };
 
     return (
         <div>
-            <div className="my-10 mb-2 flex justify-center">
+            <div className="my-10 mb-10 flex flex-col items-center">
                 <img src={clothLogo} alt="clothlogo" width={170} />
+                <h1 className="text-2xl mt-5">
+                    <span className="text-[red]">Attention!</span> First add
+                    your Cloth then Photos!
+                </h1>
             </div>
             {errors && (
                 <p className="alert w-1/4 mb-10">
@@ -114,7 +115,7 @@ const Sell = () => {
             )}
 
             <div className="flex justify-center gap-40">
-                <form className="w-[400px]" onSubmit={onSubmit}>
+                <form className="w-[400px]" onSubmit={onSubmitCloth}>
                     <div className="flex w-full items-center justify-center relative">
                         <label
                             htmlFor="cloth"
@@ -260,14 +261,13 @@ const Sell = () => {
                             }
                         ></textarea>
                         <input
-                            type="reset"
-                            className="bg-[#616161] text-white hover:bg-[#bdbdbd] mt-5 w-1/2 hover:text-black mx-auto p-2 px-10 rounded-md cursor-pointer"
-                            value={"Reset"}
-                            onClick={resetForm}
+                            type="submit"
+                            className="bg-[#66d9c2] hover:bg-[#4aa996] text-black mt-5 w-1/2 hover:text-black mx-auto p-2 px-10 rounded-md cursor-pointer"
+                            value={"Add Cloth"}
                         />
                     </div>
                 </form>
-                <form onSubmit={onSubmit} encType="multipart/form-data">
+                <form onSubmit={onSubmitPhoto} encType="multipart/form-data">
                     <div>
                         <div className="flex w-full items-center justify-center mb-5 relative">
                             <label
@@ -291,7 +291,7 @@ const Sell = () => {
                         <input
                             type="submit"
                             className="bg-[#66d9c2] hover:bg-[#4aa996] w-full p-2 px-8 rounded-md cursor-pointer"
-                            value={"Sell item"}
+                            value={"Add photo / photos"}
                         />
                     </div>
                     <div className="flex w-full flex-col items-center justify-cente relative">

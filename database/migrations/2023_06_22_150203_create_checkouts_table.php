@@ -12,12 +12,11 @@ return new class extends Migration {
      */
     public function up()
     {
-        Schema::create('photos', function (Blueprint $table) {
+        Schema::create('checkouts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cloth_id')->nullable();
-            $table->foreign('cloth_id')->references('id')->on('clothes');
-            $table->string('path');
-            $table->string('filename');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->date('date');
         });
     }
 
@@ -28,6 +27,6 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::dropIfExists('photos');
+        Schema::dropIfExists('checkouts');
     }
 };
