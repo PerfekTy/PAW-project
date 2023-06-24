@@ -1,11 +1,29 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axiosClient from "../axios-client";
+import { useStateContext } from "../contexts/ContextProvider";
 
-import Loading from "../components/Loading";
-const Delivery = (props) => {
+const Delivery = () => {
+    const { setNotification } = useStateContext();
+    const user = JSON.parse(localStorage.getItem("user"));
     const [openCourier, _setopenCourier] = useState(false);
     const [openLocker, _setopenLocker] = useState(false);
     const [openPost, _setopenPost] = useState(false);
+    const [data, setData] = useState([]);
+    const [courier, setCourier] = useState({
+        address: "",
+        city: "",
+        postal: "",
+        country: "",
+        nickname: user.nickname,
+    });
+    const [errors, setErrors] = useState(null);
+
+    useEffect(() => {
+        axiosClient.get("/account/courier").then(({ data }) => {
+            setData(data);
+        });
+    }, []);
 
     const setopenCourier = () => {
         _setopenCourier(!openCourier);
@@ -17,6 +35,22 @@ const Delivery = (props) => {
 
     const setopenPost = () => {
         _setopenPost(!openPost);
+    };
+
+    const onSubmit = () => {
+        axiosClient
+            .post("/account/courier", courier)
+            .then(() => {
+                setNotification("Delivery informations was successfully added");
+            })
+            .catch((err) => {
+                const response = err.response;
+                if (response && response.status === 422) {
+                    if (response.data.errors) {
+                        setErrors(response.data.errors);
+                    }
+                }
+            });
     };
 
     return (
@@ -32,7 +66,7 @@ const Delivery = (props) => {
                     </button>
                 </p>
                 <div className="mt-4">
-                    <p className="mb-2">
+                    <p className="mb-2 text-center">
                         Choose your favorite way to get clothes ⬇️
                     </p>
                     <ul className="text-lg text-center flex items-center flex-col">
@@ -44,8 +78,56 @@ const Delivery = (props) => {
                         </li>
                         {openCourier && (
                             <>
-                                <div className="p-2 grow">
+                                <div className="p-2 grow flex gap-10">
+                                    <div>
+                                        <h1>Your current informations</h1>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th className="border-2 p-3 px-3">
+                                                        Address
+                                                    </th>
+                                                    <th className="border-2 p-3 px-3">
+                                                        City
+                                                    </th>
+                                                    <th className="border-2 p-3 px-3">
+                                                        Postal
+                                                    </th>
+                                                    <th className="border-2 p-3 px-3">
+                                                        Country
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td className="border-2 p-2">
+                                                        {data[0].address}
+                                                    </td>
+                                                    <td className="border-2 p-2">
+                                                        {data[0].city}
+                                                    </td>
+                                                    <td className="border-2 p-2">
+                                                        {data[0].postal}
+                                                    </td>
+                                                    <td className="border-2 p-2">
+                                                        {data[0].country}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                     <div className="text-lg flex flex-col">
+                                        {errors && (
+                                            <div className="alert w-full mb-5">
+                                                {Object.keys(errors).map(
+                                                    (key) => (
+                                                        <p key={key}>
+                                                            {errors[key][0]}
+                                                        </p>
+                                                    )
+                                                )}
+                                            </div>
+                                        )}
                                         <div className="flex w-full items-center">
                                             <label className="mr-3">
                                                 Address:{" "}
@@ -53,6 +135,13 @@ const Delivery = (props) => {
                                             <input
                                                 type="text"
                                                 className="outline-[#66d9c2] p-2 text-md border-2"
+                                                value={courier.address}
+                                                onChange={(e) =>
+                                                    setCourier({
+                                                        ...courier,
+                                                        address: e.target.value,
+                                                    })
+                                                }
                                             />
                                         </div>
                                         <div className="flex w-full items-center mt-10">
@@ -62,6 +151,13 @@ const Delivery = (props) => {
                                             <input
                                                 type="text"
                                                 className="outline-[#66d9c2] p-2 text-md border-2"
+                                                value={courier.city}
+                                                onChange={(e) =>
+                                                    setCourier({
+                                                        ...courier,
+                                                        city: e.target.value,
+                                                    })
+                                                }
                                             />
                                         </div>
                                         <div className="flex w-full items-center mt-10">
@@ -71,6 +167,13 @@ const Delivery = (props) => {
                                             <input
                                                 type="text"
                                                 className="outline-[#66d9c2] p-2 text-md border-2"
+                                                value={courier.postal}
+                                                onChange={(e) =>
+                                                    setCourier({
+                                                        ...courier,
+                                                        postal: e.target.value,
+                                                    })
+                                                }
                                             />
                                         </div>
                                         <div className="flex w-full items-center mt-10">
@@ -80,16 +183,21 @@ const Delivery = (props) => {
                                             <input
                                                 type="text"
                                                 className="outline-[#66d9c2] p-2 text-md border-2"
+                                                value={courier.country}
+                                                onChange={(e) =>
+                                                    setCourier({
+                                                        ...courier,
+                                                        country: e.target.value,
+                                                    })
+                                                }
                                             />
                                         </div>
-                                        <button className="bg-[#66d9c2] hover:bg-[#4aa996] mx-auto mt-8 p-2 px-10 rounded-md">
-                                            <Link
-                                                to={
-                                                    "/account/" + props.nickname
-                                                }
-                                            >
-                                                Update your informations
-                                            </Link>
+                                        <button
+                                            onClick={onSubmit}
+                                            className="bg-[#66d9c2] hover:bg-[#4aa996] mx-auto mt-8 p-2 px-10 rounded-md"
+                                        >
+                                            Add / Update your courier
+                                            informations
                                         </button>
                                     </div>
                                 </div>
@@ -104,7 +212,7 @@ const Delivery = (props) => {
                         </li>
                         {openLocker && (
                             <>
-                                <div className="grow">Paczkomaty here</div>
+                                <div className="grow">Coming soon!</div>
                             </>
                         )}
                         <li
@@ -115,7 +223,7 @@ const Delivery = (props) => {
                         </li>
                         {openPost && (
                             <>
-                                <div className="grow">Poczta here</div>
+                                <div className="grow">Coming soon!</div>
                             </>
                         )}
                     </ul>

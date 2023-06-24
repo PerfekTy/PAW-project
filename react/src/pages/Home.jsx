@@ -1,11 +1,5 @@
-import CardList from "../components/CardList";
-
 const Home = () => {
-    return (
-        <div>
-            <CardList />
-        </div>
-    );
+    return <div></div>;
 };
 
 export default Home;

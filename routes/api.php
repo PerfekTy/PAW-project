@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CardController;
 use App\Http\Controllers\Api\CartController;
 use App\Http\Controllers\Api\ClothesController;
+use App\Http\Controllers\Api\DeliveryController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,6 +34,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/cards', [CardController::class, 'getCards']);
     Route::get('/home/{id}', [ClothesController::class, 'getCurrentCloth']);
     Route::get('/sell/{id}', [ClothesController::class, 'getCurrentCloth']);
+    Route::get('/account/courier', [DeliveryController::class, 'getCourier']);
 
     Route::delete('/cards', [CardController::class, 'destroyCard']);
     Route::delete('/cart/{id}', [CartController::class, 'deleteItemFromCart']);
@@ -54,3 +56,5 @@ Route::post('/upload', [ClothesController::class, 'addPhoto']);
 Route::post('/sell', [ClothesController::class, 'store']);
 
 Route::post('/cart', [CartController::class, 'storeCart']);
+
+Route::post('/account/courier', [DeliveryController::class, 'storeCourier']);

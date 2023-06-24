@@ -7,8 +7,7 @@ use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\StoreToCartRequest;
 use App\Models\Cart;
 use App\Models\Checkout;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
+
 
 class CartController extends Controller
 {

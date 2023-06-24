@@ -1,12 +1,12 @@
 import { CiCircleRemove } from "react-icons/ci";
 import axiosClient from "../axios-client";
 import { useStateContext } from "../contexts/ContextProvider";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const CartItem = (props) => {
     const { setNotification } = useStateContext();
-
     const [hide, setHide] = useState(false);
+
     const deleteItem = () => {
         axiosClient
             .delete(`/cart/${props.id}`)
@@ -28,7 +28,7 @@ const CartItem = (props) => {
                 className={
                     hide
                         ? "hidden"
-                        : "p-5 bg-[#fff] shadow-md rounded-lg relative"
+                        : "p-5 bg-[#fff] shadow-md rounded-lg relative flex gap-10"
                 }
             >
                 <div>

@@ -1,44 +1,25 @@
-import { useEffect, useState } from "react";
-import axiosClient from "../axios-client";
-
+import { useLocation } from "react-router-dom";
 import { Card } from "../components/Card";
 
-const CardList = () => {
-    const [clothes, setClothes] = useState([]);
+const CardList = (props) => {
+    const { filteredClothes } = props;
+    const location = useLocation();
 
-    useEffect(() => {
-        axiosClient.get("/home").then(({ data }) => {
-            setClothes(data);
-        });
-
-        axiosClient.get("/photos").then(({ data }) => {
-            const pathMap = {};
-            Object.keys(data).forEach((key) => {
-                const id = data[key].id;
-                const path = data[key].path;
-                pathMap[id] = path;
-            });
-            setClothes((prevClothes) =>
-                prevClothes.map((clothing) => ({
-                    ...clothing,
-                    path: pathMap[clothing.id],
-                }))
-            );
-        });
-    }, []);
-
+    if (location.pathname !== "/home" && location.pathname !== "/wardrobe") {
+        return null;
+    }
     return (
         <div className="home-page lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
-            {Object.keys(clothes).map((key) => (
+            {Object.keys(filteredClothes).map((key) => (
                 <div key={key}>
                     <Card
-                        name={clothes[key].name}
-                        brand={clothes[key].brand}
-                        price={clothes[key].price}
-                        size={clothes[key].size}
-                        id={clothes[key].id}
-                        user={clothes[key].user_nickname}
-                        path={clothes[key].path}
+                        name={filteredClothes[key].name}
+                        brand={filteredClothes[key].brand}
+                        price={filteredClothes[key].price}
+                        size={filteredClothes[key].size}
+                        id={filteredClothes[key].id}
+                        user={filteredClothes[key].user_nickname}
+                        path={filteredClothes[key].path}
                     />
                 </div>
             ))}
