@@ -42,9 +42,9 @@ export default function Login() {
 
     return (
         <>
-            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 grow bg-[#cde9e4] h-screen">
+            <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-[#cde9e4] h-screen">
                 <div className="bg-white m-auto p-20 pl-40 pr-40 rounded-2xl mt-20">
-                    <div className="sm:mx-auto sm:w-full sm:max-w-sm">
+                    <div className="sm:mx-auto sm:w-full sm:max-w-sm grow">
                         <img
                             className="mx-auto"
                             src={logo}

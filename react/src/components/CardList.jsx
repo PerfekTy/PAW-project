@@ -5,9 +5,10 @@ const CardList = (props) => {
     const { filteredClothes } = props;
     const location = useLocation();
 
-    if (location.pathname !== "/home" && location.pathname !== "/wardrobe") {
+    if (location.pathname !== "/home") {
         return null;
     }
+
     return (
         <div className="home-page lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2">
             {Object.keys(filteredClothes).map((key) => (

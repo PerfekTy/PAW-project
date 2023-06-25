@@ -86,19 +86,28 @@ const Item = () => {
                                 <img
                                     src={path}
                                     alt=""
-                                    className="rounded-lg w-full h-[500px] object-cover mb-16 grow"
+                                    className="rounded-lg w-[400px] h-[500px] object-cover mb-16 grow"
                                 />
                             )}
                             <div className="flex gap-4 absolute bottom-6 right-6">
-                                <button
-                                    onClick={cartHandler}
-                                    className="bg-[#66d9c2] hover:bg-[#4aa996] px-10 p-2 rounded-md flex gap-2 items-center"
-                                >
-                                    Buy now! <BsCartPlus size={20} />
-                                </button>
+                                {item.user_nickname === user.nickname ? (
+                                    ""
+                                ) : (
+                                    <button
+                                        onClick={cartHandler}
+                                        className="bg-[#66d9c2] hover:bg-[#4aa996] px-10 p-2 rounded-md flex gap-2 items-center"
+                                    >
+                                        Buy now! <BsCartPlus size={20} />
+                                    </button>
+                                )}
+
                                 <Link
                                     to="/home"
-                                    className="bg-[#d96666] hover:bg-[#9e4c4c] p-2 px-10 rounded-md flex gap-2 items-center"
+                                    className={
+                                        item.user_nickname === user.nickname
+                                            ? "bg-[#d96666] hover:bg-[#9e4c4c] p-2 px-40 rounded-md flex gap-2 items-center"
+                                            : "bg-[#d96666] hover:bg-[#9e4c4c] p-2 px-10 rounded-md flex gap-2 items-center"
+                                    }
                                 >
                                     Go back <BsArrow90DegLeft size={20} />
                                 </Link>

@@ -96,12 +96,12 @@ const Account = () => {
                                 Update your informations
                             </Link>
                         </button>
-                        <button
+                        {/* <button
                             className="bg-[#d96666] hover:bg-[#9e4c4c] mx-auto mt-5 p-2 px-10 rounded-md"
                             onClick={() => onDeleteClick(user)}
                         >
                             Delete your account
-                        </button>
+                        </button> */}
                     </div>
                 </div>
             </div>

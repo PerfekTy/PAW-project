@@ -33,26 +33,29 @@ const Cart = () => {
     };
 
     const checkout = () => {
-        axiosClient
-            .post("/cart", payload)
-            .then(() => {
-                axiosClient.delete(`/cart`).then(() => {
+        axiosClient.post("/cart", payload).then(() => {
+            axiosClient
+                .delete(`/cart`)
+                .then(() => {
                     setNotification("Checkout done");
                     setTimeout(() => {
                         window.location.reload();
-                    }, 2000);
+                    });
+                })
+                .catch((err) => {
+                    console.log("post err", err);
                 });
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+        });
     };
 
     return (
         <div className="h-screen bg-gray-100 pt-20 flex justify-center">
             <div className="flex flex-col gap-4">
                 {Object.keys(items).map((key) => (
-                    <div key={key} className="rounded-lg w-[500px]">
+                    <div
+                        key={key}
+                        className="rounded-lg w-[500px] hover:scale-110 transition-all duration-300"
+                    >
                         <CartItem
                             name={items[key].name}
                             brand={items[key].brand}

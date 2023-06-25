@@ -6,6 +6,7 @@ import { IoPricetagsOutline } from "react-icons/io5";
 import { BsCartPlus, BsFillCartCheckFill } from "react-icons/bs";
 import { useStateContext } from "../contexts/ContextProvider";
 import axiosClient from "../axios-client";
+import Loading from "./Loading";
 
 export const Card = (props) => {
     const { setNotification } = useStateContext();
@@ -57,11 +58,15 @@ export const Card = (props) => {
                     <span className="rainbow italic text-[20px]"></span>
                 </div>
                 <div>
-                    <img
-                        src={props.path}
-                        alt="photo"
-                        className="rounded-lg w-full h-[400px] object-cover"
-                    />
+                    {props.path ? (
+                        <img
+                            src={props.path}
+                            alt="photo"
+                            className="rounded-lg w-full h-[400px] object-cover"
+                        />
+                    ) : (
+                        <Loading />
+                    )}
                 </div>
                 <div>
                     {clicked ? (

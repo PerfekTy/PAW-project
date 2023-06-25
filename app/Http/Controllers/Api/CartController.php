@@ -7,7 +7,7 @@ use App\Http\Requests\StoreCartRequest;
 use App\Http\Requests\StoreToCartRequest;
 use App\Models\Cart;
 use App\Models\Checkout;
-
+use App\Models\Cloth;
 
 class CartController extends Controller
 {
@@ -68,6 +68,6 @@ class CartController extends Controller
         $currentUser = auth()->user()->id;
         $cart = Cart::where('user_id', $currentUser)->delete();
 
-        return $cart;
+        return response(['cart' => $cart]);
     }
 }

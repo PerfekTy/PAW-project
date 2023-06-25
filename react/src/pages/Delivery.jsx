@@ -9,7 +9,7 @@ const Delivery = () => {
     const [openCourier, _setopenCourier] = useState(false);
     const [openLocker, _setopenLocker] = useState(false);
     const [openPost, _setopenPost] = useState(false);
-    const [data, setData] = useState([]);
+    const [dated, setDated] = useState(null);
     const [courier, setCourier] = useState({
         address: "",
         city: "",
@@ -21,7 +21,9 @@ const Delivery = () => {
 
     useEffect(() => {
         axiosClient.get("/account/courier").then(({ data }) => {
-            setData(data);
+            for (let i = 0; i < data.length; i++) {
+                setDated(data[i]);
+            }
         });
     }, []);
 
@@ -79,43 +81,46 @@ const Delivery = () => {
                         {openCourier && (
                             <>
                                 <div className="p-2 grow flex gap-10">
-                                    <div>
-                                        <h1>Your current informations</h1>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th className="border-2 p-3 px-3">
-                                                        Address
-                                                    </th>
-                                                    <th className="border-2 p-3 px-3">
-                                                        City
-                                                    </th>
-                                                    <th className="border-2 p-3 px-3">
-                                                        Postal
-                                                    </th>
-                                                    <th className="border-2 p-3 px-3">
-                                                        Country
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td className="border-2 p-2">
-                                                        {data[0].address}
-                                                    </td>
-                                                    <td className="border-2 p-2">
-                                                        {data[0].city}
-                                                    </td>
-                                                    <td className="border-2 p-2">
-                                                        {data[0].postal}
-                                                    </td>
-                                                    <td className="border-2 p-2">
-                                                        {data[0].country}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                                    {dated !== null && (
+                                        <div>
+                                            <h1>Your current informations</h1>
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        <th className="border-2 p-3 px-3">
+                                                            Address
+                                                        </th>
+                                                        <th className="border-2 p-3 px-3">
+                                                            City
+                                                        </th>
+                                                        <th className="border-2 p-3 px-3">
+                                                            Postal
+                                                        </th>
+                                                        <th className="border-2 p-3 px-3">
+                                                            Country
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className="border-2 p-2">
+                                                            {dated.address}
+                                                        </td>
+                                                        <td className="border-2 p-2">
+                                                            {dated.city}
+                                                        </td>
+                                                        <td className="border-2 p-2">
+                                                            {dated.postal}
+                                                        </td>
+                                                        <td className="border-2 p-2">
+                                                            {dated.country}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+
                                     <div className="text-lg flex flex-col">
                                         {errors && (
                                             <div className="alert w-full mb-5">
